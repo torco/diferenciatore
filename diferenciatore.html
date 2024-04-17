@@ -1,132 +1,375 @@
-<html>
-<head>
-
-<!-- Minified version -->
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.min.css">
-
-<!-- Un-Minified version -->
-<link rel="stylesheet" href="https://cdn.simplecss.org/simple.css">
-
-    <style>
-        style="background-color: #FFA07A;
-        body{
-            line-height: 1.2;
-        }
-        p {
-           margin: 0.3rem 0;
-           }
-        .highlight {
-            color: orange; /* Change the color as desired */
-            font-weight: bold; /* Add other styles as needed */
-            font-size : 1.4rem;
-            }
-        .nohighlight {
-            color: gray; /* Change the color as desired */
-            font-weight: bold; /* Add other styles as needed */
-            font-size : 1.4rem;
-            }
-    </style>
-
-	<title>IL DIFERENCIATORE</title>
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script id="MathJax-script" async
-          src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
-  </script>	
-<script>
-        function checkdif() {
-            // Get the element with the specified ID
-            var paragraph = document.getElementById("myParagraph");
-            var P1 = document.getElementById("P1").value;
-            var P2 = document.getElementById("P2").value;
-            var N1 = document.getElementById("N1").value;
-            var N2 = document.getElementById("N2").value;
-            
-            P1 = Number(P1); P2 = Number(P2) ; N1 = Number(N1) ; N2 = Number(N2);
-            
-            var checks = false;
-            checks = (P1 == 0) ? false : true;
-            checks = (P2 == 0) ? false : true;
-            checks = (N1 == 0) ? false : true;
-            checks = (N2 == 0) ? false : true;
-
-            var val = (P2 / 100 - P1 / 100) / Math.sqrt(
-            (((N2 * P2 / 100) + (N1 * P1 / 100)) / (N2 + N1)) *
-            (1 - (((N2 * P2 / 100) + (N1 * P1 / 100)) / (N2 + N1))) *
-            ((1 / N2) + (1 / N1))
-            );
-        
-            
-            var verbose = `verbose: N1 ${N1}, N2 ${N2}, P1 ${P1}, P2 ${P2}`
-            
-            
-            var x = 'ERROR!'
-            if (Math.abs(val) > 1.954) {
-                var x = ' la diferencia es significativa' ;
-                paragraph.classList.add("highlight");
-                paragraph.classList.remove("nohighlight");
-            } else {
-                var x = 'la diferencia no es significativa';
-                paragraph.classList.add("nohighlight");
-                paragraph.classList.remove("highlight");
-            }
-            
-
-            
-
-            
-            var newText = `${x} `;
-            
-            // Check if the element exists
-            if (paragraph) {
-                if (checks) {
-                // Replace the text content of the element
-                paragraph.textContent = newText;
-                }
-            } else {
-                paragraph.textContent = "ERROR";
-            }
-        }
-</script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>IL DIFERENCIATORE</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, viewport-fit=cover" />
     
-</head>
-<body>
-<h2>Diferencias Significativas</h2>
-
-<p>Esta es una webapp sencilla que implementa una formula de calculo de diferencias significativas</p>
-
-<p>P1&nbsp;<input id="P1" type="number" oninput="checkdif()" /></p>
-
-<p>N1&nbsp;<input id="N1" type="number" oninput="checkdif()" /></p>
-
-<p>P2&nbsp;<input id="P2" type="number" oninput="checkdif()" /></p>
-
-<p>N2&nbsp;<input id="N2" type="number" oninput="checkdif()" /></p>
-
-
-<!-- <button onclick="replaceText()" type="button">Calcular!</button>  -->
-
-<p id="myParagraph"> - </p>
-
-<h2>C&oacute;mo usarlo</h2>
-<p>ingresa dos valores y sus respectivas bases de c&aacute;lculo, y apreta calcular. este objeto est&aacute; pensando para calcular si dos porcentajes son diferentes entre s&iacute;. P1 y P2 deben ser siempre valores entre 1 y 100, mientras que N1 y N2 pueden ser, b&aacute;sicamente, cualquier cosa (aunque deber&iacute;an ser el N no ponderado de casos de donde sacaste el porcentaje)</p>
-<p>Por ejemplo, hacemos una encuesta a 300 personas, 100 del norte, 100 de la RM y 100 del sur, donde les preguntamos alguna cosa como por ejemplo cu&aacute;l es su comida favorita, y lo que nos interesa fuera el porcentaje de casos que su comida favorita es la pizza.&nbsp;</p>
-<p>Nuestros resultados podr&iacute;an ser, por ejemplo, que del total de los casos el 33% de las personas les gusta la pizza, mientras que ese porcentaje&nbsp;para las personas de la RM es&nbsp;55%. Hay, naturalmente, una diferencia del 22% en el sentido de m&aacute;s gusto por la pizza entre la gente de la RM. Para saber si esa diferencia es significativa, decimos que el total es nuestro primer valor y la RM es nuestro segundo valor: as&iacute;, pues, ingresar&iacute;amos los siguientes datos</p>
-<p>P1 33</p>
-<p>N1 300</p>
-<p>P2 55</p>
-<p>N2 100</p>
-<h2>Explicaci&oacute;n</h2>
-<p>Este script utiliza la siguiente f&oacute;rmula</p>
-
-<p style="text-align: center;">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  </head>
   
-  \( \frac{{\frac{{P2}}{{100}} - \frac{{P1}}{{100}}}}{{\sqrt{\left(\frac{{N2 \cdot P2}}{{100}} + \frac{{N1 \cdot P1}}{{100}}\right) \div (N2 + N1) \cdot \left(1 - \frac{{N2 \cdot P2}}{{100}} - \frac{{N1 \cdot P1}}{{100}}\right) \cdot \left(\frac{{1}}{{N2}} + \frac{{1}}{{N1}}\right)}}}
- \)
-</p>
+  <style>
+    /* CSS to center table cell contents */
+    table, th, td {
+      text-align: center;
+    }
+  </style>
 
-<p>Donde si el resultado de la f&oacute;rmula fuera, en t&eacute;rminos absolutos, mayor que 1,954, entendemos que la diferencia es "estad&iacute;sticamente significativa".</p>
-<p>P1 y P2 son el valor 1 y el valor 2, N1 y N2 son la base de c&aacute;lculo (el n) de P1 y P2, respectivamente.&nbsp;</p>
-<p>&nbsp;</p>
-<p>&nbsp;</p>
-</body>
+  <body>
+
+    <nav class="navbar navbar-light bg-success">
+      <a class="navbar-brand" >IL DIFERENCIATORE</a>
+      <ul class="navbar-nav pull-right">
+        <li class="nav-item">
+        </li>
+      </ul>
+    </nav>
+    <br/>
+    <br/>
+
+    <div class="container" id="tabula_prima">
+      <div class="row">
+        <div class="col-md-12">
+          <p class="message">no hay data cargada</p>
+          <table class="table table-bordered table-sm">
+            <thead>
+              <tr>
+                <th></th>
+                <th>A</th>
+                <th>B</th>
+                <th>C</th>
+                <th>D</th>
+                <th>E</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center" colspan="6">Pega una tabla.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <br/>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+		<div id="new_table"></div>
+        </div>
+      </div>
+    </div>
+	
+	
+	
+	
+	<div class="container">
+		<button class="btn btn-sm btn-outline-danger clear" id = 'boton_abajo'> Boton Abajo </button>
+	<div>
+	
+	<!-- Imports -->
+	
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script src="https://unpkg.com/gridjs/dist/gridjs.umd.js"></script>
+	<script type="module">
+    import {
+        Grid,
+        html
+    } from "https://unpkg.com/gridjs?module";
+	</script>
+	
+	<script type="module">
+		import {
+			Grid,
+			html
+		} from "https://unpkg.com/gridjs?module";
+	</script>
+	
+    <script> //main script. 
+	
+	
+	
+	var glob = [1,2,3];
+	var alto_tabla;
+	var ancho_tabla;
+	
+	$(document).ready(function() {
+	
+
+  function saveAndAddClearButton(header, rows) {
+    window.localStorage.header = JSON.stringify(header);
+    window.localStorage.rows = JSON.stringify(rows);
+    window.localStorage.date = (new Date()).toString();
+
+    var $clear = $('<button class="btn btn-sm btn-outline-danger clear">Borrar</button>');
+    $('p.message').append($clear);
+    $clear.click(function(e) {
+      delete window.localStorage.header;
+      delete window.localStorage.rows;
+      delete window.localStorage.date;
+      window.location.reload();
+    });
+  }
+
+  function buildTable(header, rows) {
+	glob = [header, rows]
+    var $thead = $('table>thead').empty();
+    var $tbody = $('table>tbody').empty();
+
+    var $tr = $('<tr></tr>').appendTo($thead);
+    header.forEach(function(value) {
+      $tr.append('<th>' + value + '</th>');
+    });
+
+    rows.forEach(function(row) {
+      var $tr = $('<tr></tr>').appendTo($tbody);
+      row.forEach(function(value) {
+        $tr.append('<td>' + value + '</td>');
+      });
+    });
+    $('p.message').html(rows.length + ' filas.  ');
+    saveAndAddClearButton(header, rows);
+  }
+
+  function onPaste(e) {
+    if (!e.originalEvent.clipboardData || !e.originalEvent.clipboardData.items) return;
+
+    var items = e.originalEvent.clipboardData.items;
+	
+    var data;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].type == 'text/plain') {
+        data = items[i];
+        break;
+      }
+    }
+    if (!data) return;
+
+    data.getAsString(function(text) {
+      text = text.replace(/\r/g, '').trim('\n');
+      var rowsOfText = text.split('\n');
+      var header = [];
+      var rows = [];
+      rowsOfText.forEach(function(rowAsText) {
+        // Remove wrapping double quotes
+        var row = rowAsText.split('\t').map(function(colAsText) {
+          return colAsText.trim().replace(/^"(.*)"$/, '$1');
+        });
+        // The first row with data is assumed to be the header
+        if (header.length == 0) {
+          // Remove empty columns
+          while (row.length && !row[row.length-1].trim()) row.pop();
+          if (row.length == 0) return;
+          header = row;
+        } else {
+          rows.push(row.slice(0, header.length));
+        }
+      });
+      buildTable(header, rows);
+	  
+    });
+  }
+
+  $(document).on('paste', onPaste);
+
+  // Attempt to restore from local storage
+  try {
+    var header = JSON.parse(window.localStorage.header);
+    var rows = JSON.parse(window.localStorage.rows);
+    buildTable(header, rows);
+    $('p.message');
+  } catch (err) {}
+
+});
+
+function tablaDeCuadruplas(rows) {
+    let bases = rows[rows.length - 1];
+    let output = [];
+    for (let i = 0; i < rows.length - 1; i++) {
+        let fila = rows[i];
+        let total = fila[1];
+        let filaOutput = [];
+        for (let j = 1; j < fila.length; j++) {
+            let valor = fila[j];
+            let baseValor = bases[j];
+            let baseTotal = bases[1];
+            let quad = [valor, baseValor, total, baseTotal];
+            filaOutput.push(quad);
+        }
+        output.push(filaOutput);
+    }
+    return output;
+}
+// el orden es: P1, N1, P2, N2
+function checkDif(cuadrupla) {
+	
+	let P2 = parseInt(cuadrupla[0]);
+	let N2 = parseInt(cuadrupla[1]);
+	let P1 = parseInt(cuadrupla[2]);
+	let N1 = parseInt(cuadrupla[3]);
+	
+	//console.log([P1, N1, P2, N2])
+	
+	var checks = false;
+	checks = (P1 == 0) ? false : true;
+	checks = (P2 == 0) ? false : true;
+	checks = (N1 == 0) ? false : true;
+	checks = (N2 == 0) ? false : true;
+
+	var val = (P2 / 100 - P1 / 100) / Math.sqrt(
+	(((N2 * P2 / 100) + (N1 * P1 / 100)) / (N2 + N1)) *
+	(1 - (((N2 * P2 / 100) + (N1 * P1 / 100)) / (N2 + N1))) *
+	((1 / N2) + (1 / N1))
+	);
+	
+	return val;
+	}
+
+function decide(number) {
+	let umbral = 1.1954
+	var output;
+	//console.log([umbral, number, umbral*-1])
+	if (number > umbral) { output = '+' ; console.log('grande')}
+	else if (number < (umbral*-1)) { output = '-' ;} 
+	else { output = ''; }
+	return output;
+	}
+	
+function empty(element) {
+  while(element.firstElementChild) {
+     element.firstElementChild.remove();
+  }
+}
+
+var global_array;
+var decision_array;
+var varnames = [];
+var filas;
+var format;
+
+function myFormatter(cell, row, column, data) {
+  console.log('i am formatter')
+  if (cell.includes('-')) {
+    return '<span style="background-color: green">${cell}</span>';
+  } else if (cell.includes('+')) {
+    return '<span style="background-color: red">${cell}</span>';
+  }
+  return cell;
+}
+
+
+
+// esta es la función que se ejecuta cuando apretas el botón "Boton Abajo"
+
+document.getElementById("boton_abajo").addEventListener("click", function() {
+
+	document.getElementById('tabula_prima') && document.getElementById('tabula_prima').remove();
+	
+	
+	let parent = document.getElementById("new_table");
+	empty(parent);
+	
+	var encabezados = glob[0];
+	filas = glob[1];
+	var nfilas = glob[1].length;
+	var ncols = glob[0].length;
+	varnames = [];
+
+	for (let i = 0; i < filas.length; i++) {
+	  varnames.push(filas[i][0]);
+	}
+	
+    let tdc = tablaDeCuadruplas(glob[1]);
+	global_array = tdc.map(subArray => subArray.map(checkDif));
+	decision_array = global_array.map(subArray => subArray.map(decide));
+
+	
+	for (let i = 0; i < decision_array.length; i++) {
+	  //decision_array[i].unshift(varnames[i]);
+	  decision_array[i].unshift("");
+	  console.log(decision_array[i]);
+	}
+	
+	emptyArray = []
+	for (let i = 0 ; i < ncols; i++) { emptyArray.push('') }
+	
+	format = decision_array
+	format.push(emptyArray);
+	
+	let combinedArray = filas.map((row, rowIndex) =>
+	row.map((element, columnIndex) => element + format[rowIndex][columnIndex])
+	);
+	
+	
+	let tabla = new gridjs.Grid({
+		columns: encabezados,
+		data: combinedArray,
+		formatters: {
+        '*': myFormatter
+      }})
+	
+	tabla.render(document.getElementById("new_table"));
+	
+setTimeout(() => {
+    // Get all cell elements in the table
+    const cells = document.querySelectorAll('#new_table tbody td');
+    const newContents = [];
+
+    // Check cell contents and store modified contents in the temporary array
+    cells.forEach(cell => {
+        let content = cell.textContent;
+        if (content.includes('+')) {
+            cell.style.backgroundColor = '#50C878';
+        } else if (content.includes('-')) {
+            cell.style.backgroundColor = '#ff3d3d';
+        }
+        content = content.replace(/[+-]/g, '');
+        newContents.push(content);
+    });
+
+    // Update cell contents after the timeout
+    cells.forEach((cell, index) => {
+        cell.textContent = newContents[index];
+    });
+}, 120); // Timeout of 120ms
+	
+	document.getElementById('boton_abajo') && document.getElementById('boton_abajo').remove();
+	document.getElementById('boton_refrescar').style.display = 'inline';
+	document.getElementById('boton_copiar').style.display = 'inline';
+
+	document.getElementById('boton_copiar').addEventListener('click', function() {
+    navigator.clipboard.writeText(document.getElementById('new_table').outerText).then(() => console.log('Table contents copied to clipboard!')).catch(err => alert('hubo un problema', err));
+    });
+
+	
+});
+
+
+
+	
+	
+	
+	</script>
+	
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+			
+        </div>
+      </div>
+    </div>
+	<div class="container">
+	<br>
+		<button onclick="window.location.reload();" class="btn btn-sm btn-outline-danger clear" id = 'boton_refrescar' style="display: none; margin-right: 10px;">
+		Refrescar </button>
+		               
+		<button class="btn btn-sm btn-outline-danger clear" id = 'boton_copiar'style="display: none; margin-right: 10px;">
+		Copiar Tabla </button>
+	<div>
+	
+	
+  </body>
 </html>
