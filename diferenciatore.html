@@ -1,3 +1,6 @@
+<!-- il diferenciatore -->
+<!-- version 0.5, 19 de abril 2024 -->
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -229,7 +232,7 @@ function checkDif(cuadrupla) {
 	}
 
 function decide(number) {
-	let umbral = 1.1954
+	let umbral = 1.954
 	var output;
 	//console.log([umbral, number, umbral*-1])
 	if (number > umbral) { output = '+' ; console.log('grande')}
@@ -249,6 +252,7 @@ var decision_array;
 var varnames = [];
 var filas;
 var format;
+var tdc;
 
 function myFormatter(cell, row, column, data) {
   console.log('i am formatter')
@@ -282,7 +286,9 @@ document.getElementById("boton_abajo").addEventListener("click", function() {
 	  varnames.push(filas[i][0]);
 	}
 	
-    let tdc = tablaDeCuadruplas(glob[1]);
+	console.log(varnames)
+	
+    tdc = tablaDeCuadruplas(glob[1]);
 	global_array = tdc.map(subArray => subArray.map(checkDif));
 	decision_array = global_array.map(subArray => subArray.map(decide));
 
@@ -290,7 +296,7 @@ document.getElementById("boton_abajo").addEventListener("click", function() {
 	for (let i = 0; i < decision_array.length; i++) {
 	  //decision_array[i].unshift(varnames[i]);
 	  decision_array[i].unshift("");
-	  console.log(decision_array[i]);
+	  //console.log(decision_array[i]);
 	}
 	
 	emptyArray = []
