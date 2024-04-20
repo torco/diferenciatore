@@ -1,5 +1,5 @@
 <!-- il diferenciatore -->
-<!-- version 0.5, 19 de abril 2024 -->
+<!-- version 0.6, 19 de abril 2024 -->
 
 <!doctype html>
 <html lang="en">
@@ -16,21 +16,29 @@
     table, th, td {
       text-align: center;
     }
+	
+	table {
+        font-size: 20px;
+    }
+	
+	    body {
+        font-family: Montserrat, sans-serif;
+        font-size: 10px; /* Default font size of 10px */
+    }
   </style>
 
   <body>
 
-    <nav class="navbar navbar-light bg-success">
-      <a class="navbar-brand" >IL DIFERENCIATORE</a>
-      <ul class="navbar-nav pull-right">
-        <li class="nav-item">
-        </li>
-      </ul>
-    </nav>
-    <br/>
+	
+
     <br/>
 
     <div class="container" id="tabula_prima">
+	
+	<h2> IL DIFERENCIATORE </h2>
+
+	<br>
+	
       <div class="row">
         <div class="col-md-12">
           <p class="message">no hay data cargada</p>
@@ -68,11 +76,13 @@
 	
 	
 	<div class="container">
-		<button class="btn btn-sm btn-outline-danger clear" id = 'boton_abajo'> Boton Abajo </button>
+		<button class="btn btn-sm btn-outline-danger clear" id = 'boton_abajo'> Calcular </button>
 	<div>
 	
 	<!-- Imports -->
-	
+	<script id="MathJax-script" async
+		src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+	</script>	
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -349,6 +359,33 @@ setTimeout(() => {
 	document.getElementById('boton_copiar').addEventListener('click', function() {
     navigator.clipboard.writeText(document.getElementById('new_table').outerText).then(() => console.log('Table contents copied to clipboard!')).catch(err => alert('hubo un problema', err));
     });
+	
+	
+	// this is what happens when you click copiar mascara. 
+	document.getElementById('boton_copiar').addEventListener('click', function() {
+	
+	var format_mask = [];
+	
+	format_mask.push(glob[0]);
+	
+	format.forEach((iter, index) => {
+		var line = iter;
+		iter[0]=varnames[index];
+		format_mask.push(line);
+		//console.log(line);
+	
+	console.log(format_mask);
+	});
+    
+	this.style.backgroundColor = 'salmon'; // Change color to yellow
+    setTimeout(() => this.style.backgroundColor = '', 500); // Reset color after 500ms
+	
+	console.log(format_mask);
+	
+	navigator.clipboard.writeText(format_mask.map(row => row.join('\t')).join('\n'))
+    .catch(err => alert('Failed to copy: '));
+	
+    });
 
 	
 });
@@ -373,9 +410,8 @@ setTimeout(() => {
 		Refrescar </button>
 		               
 		<button class="btn btn-sm btn-outline-danger clear" id = 'boton_copiar'style="display: none; margin-right: 10px;">
-		Copiar Tabla </button>
-	<div>
-	
+		Copiar Mascara </button>
+	<div>			
 	
   </body>
 </html>
